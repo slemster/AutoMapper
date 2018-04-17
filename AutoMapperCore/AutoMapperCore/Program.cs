@@ -1,5 +1,6 @@
 ﻿using System;
 using AutoMapper;
+using Newtonsoft.Json;
 
 namespace AutoMapperCore
 {
@@ -17,6 +18,9 @@ namespace AutoMapperCore
             Console.ReadLine();
         }
 
+        /// <summary>
+        /// Run AutoMapper as Static
+        /// </summary>
         private static void RunStaticMapper()   
         {
             // Static
@@ -30,14 +34,17 @@ namespace AutoMapperCore
 
             });
 
-            var dest1 = Mapper.Map<PersonDbo, PersonDto>(new PersonDbo { FirstName = "Sean", LastName = "Lemster", Addresses = new AddressDbo { Address1 = "", Address2 = "", City = "Redmond", State = "WA", Zip = "98052" } });
-            var dest2 = Mapper.Map<PersonDto, PersonDbo>(new PersonDto { FirstName = "Sean", LastName = "Lemster", Addresses = new AddressDto { Address1 = "", Address2 = "", City = "Redmond", State = "WA", Zip = "98052" } });
+            var dto = Mapper.Map<PersonDbo, PersonDto>(new PersonDbo { FirstName = "Sean", LastName = "Lemster", Addresses = new AddressDbo { Address1 = "", Address2 = "", City = "Redmond", State = "WA", Zip = "98052" } });
+            var dbo = Mapper.Map<PersonDto, PersonDbo>(new PersonDto { FirstName = "Sean", LastName = "Lemster", Addresses = new AddressDto { Address1 = "", Address2 = "", City = "Redmond", State = "WA", Zip = "98052" } });
 
-
-            Console.WriteLine(dest1.FirstName);
-            Console.WriteLine(dest2.FirstName);
+            
+            Console.WriteLine(JsonConvert.SerializeObject(dto));
+            Console.WriteLine(JsonConvert.SerializeObject(dbo));
         }
 
+        /// <summary>
+        /// Run AutoMapper as Instance
+        /// </summary>
         private static void RunInstanceMapper() 
         {
             // Instance
@@ -51,15 +58,15 @@ namespace AutoMapperCore
             });
 
 
-            var mapper2 = config.CreateMapper();    // or   var mapper2 = new Mapper(config);
+            var mapper = config.CreateMapper();    // or   var mapper2 = new Mapper(config);
 
 
-            var dest3 = mapper2.Map<PersonDbo, PersonDto>(new PersonDbo { FirstName = "Kristine", LastName = "Lemster", Addresses = new AddressDbo { Address1 = "", Address2 = "", City = "Redmond", State = "WA", Zip = "98052" } });
-            var dest4 = mapper2.Map<PersonDto, PersonDbo>(new PersonDto { FirstName = "Kristine", LastName = "Lemster", Addresses = new AddressDto { Address1 = "", Address2 = "", City = "Redmond", State = "WA", Zip = "98052" } });
+            var dto = mapper.Map<PersonDbo, PersonDto>(new PersonDbo { FirstName = "Sean", LastName = "Lemster", Addresses = new AddressDbo { Address1 = "", Address2 = "", City = "Redmond", State = "WA", Zip = "98052" } });
+            var dbo = mapper.Map<PersonDto, PersonDbo>(new PersonDto { FirstName = "Sean", LastName = "Lemster", Addresses = new AddressDto { Address1 = "", Address2 = "", City = "Redmond", State = "WA", Zip = "98052" } });
 
 
-            Console.WriteLine(dest3.FirstName);
-            Console.WriteLine(dest4.FirstName);
+            Console.WriteLine(JsonConvert.SerializeObject(dto));
+            Console.WriteLine(JsonConvert.SerializeObject(dbo));
         }
     }
 }
